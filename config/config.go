@@ -31,6 +31,14 @@ func GetURLOrBail(urlEnvVar string) *url.URL {
 	return parsedUrl
 }
 
+func GetOrDefault(envVar string, defaultValue string) string {
+	envValue := os.Getenv(envVar)
+	if envValue == "" {
+		return defaultValue
+	}
+	return envValue
+}
+
 // SetMaxIdleConnsPerHost sets the MaxIdleConnsPerHost value for the default
 // HTTP transport. If you are using a custom transport, calling this function
 // won't change anything.

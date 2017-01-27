@@ -36,9 +36,15 @@ func configure() (http.Handler, error) {
 
 	go setup.MeasureActiveQueries(5 * time.Second)
 
-	// If you run this in production, change this user.
-	server.AddUser("test", "hymanrickover")
+	configureUser()
 	return server.Get(server.DefaultAuthorizer), nil
+}
+
+func configureUser() {
+	// These should be set if you're running this in production
+	userName := config.GetOrDefault("RICKOVER_USER_NAME", "test")
+	password := config.GetOrDefault("RICKOVER_PASSWORD", "hymanrickover")
+	server.AddUser(userName, password)
 }
 
 func main() {

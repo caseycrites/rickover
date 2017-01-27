@@ -35,3 +35,18 @@ func TestGetIntError(t *testing.T) {
 	_, err = GetInt("CONFIG_TEST_INT_VAR")
 	test.AssertError(t, err, "getting bad env var")
 }
+
+func TestGetOrDefaultNonDefault(t *testing.T) {
+	err := os.Setenv("CONFIG_TEST_STRING_VAR", "HEY")
+	test.AssertNotError(t, err, "setting env var")
+	defer func() {
+		os.Unsetenv("CONFIG_TEST_STRING_VAR")
+	}()
+	s := GetOrDefault("CONFIG_TEST_STRING_VAR", "TEST")
+	test.AssertEquals(t, s, "HEY")
+}
+
+func TestGetOrDefaultDefault(t *testing.T) {
+	s := GetOrDefault("CONFIG_TEST_STRING_VAR", "TEST")
+	test.AssertEquals(t, s, "TEST")
+}
